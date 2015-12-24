@@ -4,8 +4,7 @@ This is a JavaFX app.
 
 ### What is this repository for? ###
 
-* Quick summary
-This program will allow a user to easily generate IPFIX pcap files for testing.
+* This program will allow a user to easily generate IPFIX pcap files for testing.
 
 ### How do I get set up? ###
 

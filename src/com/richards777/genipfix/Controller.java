@@ -57,10 +57,9 @@ public class Controller {
 
     @FXML
     private void generateFile(ActionEvent event) {
-        byte data[] = {1, 2, 3, 4};
         Path file = Paths.get(filename.getText());
         try {
-            Files.write(file, data);
+            Files.write(file, GlobalHeader.getBuffer());
         } catch (IOException e) {
             e.printStackTrace();
         }
