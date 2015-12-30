@@ -7,10 +7,10 @@ public class IPv4Datagram implements EthernetPayload {
     private byte versionIHL = 0x45;
     private byte dsECN = 0;
     private short totalLength = 20;  // total length of IPv4 datagram in bytes
-    private final short identification = 0;
+    private final short identification = 1;
     private final short flagsFragmentOffset = 0;
     private byte timeToLive = 64; // RFC1122 recommended value is 64
-    private byte protocol = 0;
+    private byte protocol = 17; // 17 = UDP, 6 = TCP
     private short headerChecksum = 0;
     private int srcIPAddress = 0x08000815;
     private int destIPAddress = 0x08000816;

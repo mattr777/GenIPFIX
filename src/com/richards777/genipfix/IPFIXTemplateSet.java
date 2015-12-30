@@ -16,6 +16,7 @@ public class IPFIXTemplateSet extends IPFIXSet {
 
     public byte[] getBuffer() {
         ByteBuffer b = ByteBuffer.allocate(lengthInBytes());
+        b.put(setHeader.getBuffer());
         for (IPFIXTemplateRecord templateRecord : templateRecords) {
             b.put(templateRecord.getBuffer());
         }

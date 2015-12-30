@@ -3,8 +3,8 @@ package com.richards777.genipfix;
 import java.nio.ByteBuffer;
 
 public class UDPDatagram {
-    private short srcPort = 123;
-    private short destPort = 456;
+    private short srcPort = 0xFE;
+    private short destPort = 4739; // default port for IPFIX
     private short length = 8;
     private short checksum = 0;
     private byte[] buffer;
