@@ -34,4 +34,8 @@ public class IPFIXTemplateSet extends IPFIXSet {
     public IPFIXTemplateSet() {
         setHeader = new IPFIXSetHeader(IPFIXSetHeader.TEMPLATE_SET);
     }
+
+    public IPFIXTemplateRecord getTemplateRecord() {
+        return templateRecords.get(0);
+    }
 }

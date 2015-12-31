@@ -73,25 +73,47 @@ public class Controller implements Initializable {
         elementNames.add(elementName4.getValue());
         templateSet.addTemplateRecord((short) 777, elementNames);
 
-        IPFIXMessage message = new IPFIXMessage();
-        message.addSet(templateSet);
+        IPFIXMessage templateMessage = new IPFIXMessage();
+        templateMessage.addSet(templateSet);
 
-        UDPDatagram udpDatagram = new UDPDatagram();
-        udpDatagram.setBuffer(message.getBuffer());
+        UDPDatagram templateUDPDatagram = new UDPDatagram();
+        templateUDPDatagram.setBuffer(templateMessage.getBuffer());
 
-        IPv4Datagram iPv4Datagram = new IPv4Datagram();
-        iPv4Datagram.setBuffer(udpDatagram.getBuffer());
+        IPv4Datagram templateIPv4Datagram = new IPv4Datagram();
+        templateIPv4Datagram.setBuffer(templateUDPDatagram.getBuffer());
 
-        EthernetFrame ethernetFrame = new EthernetFrame();
-        ethernetFrame.setPayload(iPv4Datagram);
+        EthernetFrame templateEthernetFrame = new EthernetFrame();
+        templateEthernetFrame.setPayload(templateIPv4Datagram);
 
-        PacketHeader packetHeader = new PacketHeader(1451499300, 0, ethernetFrame.getLengthInBytes(), ethernetFrame.getLengthInBytes());
+        PacketHeader templatePacketHeader = new PacketHeader(1451499300, 0, templateEthernetFrame.getLengthInBytes(), templateEthernetFrame.getLengthInBytes());
+
+
+        IPFIXDataSet dataSet = new IPFIXDataSet(templateSet.getTemplateRecord());
+
+        IPFIXMessage dataMessage = new IPFIXMessage();
+        dataMessage.addSet(dataSet);
+
+        UDPDatagram dataUDPDatagram = new UDPDatagram();
+        dataUDPDatagram.setBuffer(dataMessage.getBuffer());
+
+        IPv4Datagram dataIPv4Datagram = new IPv4Datagram();
+        dataIPv4Datagram.setBuffer(dataUDPDatagram.getBuffer());
+
+        EthernetFrame dataEthernetFrame = new EthernetFrame();
+        dataEthernetFrame.setPayload(dataIPv4Datagram);
+
+        PacketHeader dataPacketHeader = new PacketHeader(1451499301, 0, dataEthernetFrame.getLengthInBytes(), dataEthernetFrame.getLengthInBytes());
+
+
+
 
         Path file = Paths.get(filename.getText());
         try (OutputStream out = Files.newOutputStream(file)) {
             out.write(GlobalHeader.getBuffer());
-            out.write(packetHeader.getBuffer());
-            out.write(ethernetFrame.getBuffer());
+            out.write(templatePacketHeader.getBuffer());
+            out.write(templateEthernetFrame.getBuffer());
+            out.write(dataPacketHeader.getBuffer());
+            out.write(dataEthernetFrame.getBuffer());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -34,4 +34,12 @@ public class IPFIXTemplateRecord {
         return b.array();
     }
 
+    public short getTemplateID() {
+        return templateRecordHeader.getTemplateID();
+    }
+
+    public ArrayList<IPFIXFieldSpecifier> getFieldSpecifiers() {
+        return ipfixFieldSpecifiers;
+    }
+
 }

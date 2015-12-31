@@ -28,56 +28,21 @@
    <children>
        <Label text="Name" GridPane.columnIndex="1" />
        <Label text="Size (bytes)" GridPane.columnIndex="2" />
+
        <CheckBox fx:id="checkBox1" mnemonicParsing="false" selected="true" GridPane.rowIndex="1" />
-       <ComboBox fx:id="elementName1" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="element name">
-           <items>
-               <FXCollections fx:factory="observableArrayList">
-                   <String fx:value="sourceIPv4Address" />
-                   <String fx:value="destinationIPv4Address" />
-                   <String fx:value="packetDeltaCount" />
-                   <String fx:value="octetDeltaCount" />
-               </FXCollections>
-           </items>
-       </ComboBox>
+       <ComboBox fx:id="elementName1" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="element name" />
        <TextField fx:id="elementSize1" promptText="element size" text="4" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
        <CheckBox fx:id="checkBox2" mnemonicParsing="false" selected="true" GridPane.rowIndex="2" />
-       <ComboBox fx:id="elementName2" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="element name">
-           <items>
-               <FXCollections fx:factory="observableArrayList">
-                   <String fx:value="sourceIPv4Address" />
-                   <String fx:value="destinationIPv4Address" />
-                   <String fx:value="packetDeltaCount" />
-                   <String fx:value="octetDeltaCount" />
-               </FXCollections>
-           </items>
-       </ComboBox>
+       <ComboBox fx:id="elementName2" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="element name" />
        <TextField fx:id="elementSize2" promptText="element size" text="4" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
        <CheckBox fx:id="checkBox3" mnemonicParsing="false" selected="true" GridPane.rowIndex="3" />
-       <ComboBox fx:id="elementName3" GridPane.columnIndex="1" GridPane.rowIndex="3" promptText="element name">
-           <items>
-               <FXCollections fx:factory="observableArrayList">
-                   <String fx:value="sourceIPv4Address" />
-                   <String fx:value="destinationIPv4Address" />
-                   <String fx:value="packetDeltaCount" />
-                   <String fx:value="octetDeltaCount" />
-               </FXCollections>
-           </items>
-       </ComboBox>
+       <ComboBox fx:id="elementName3" GridPane.columnIndex="1" GridPane.rowIndex="3" promptText="element name" />
        <TextField fx:id="elementSize3" promptText="element size" text="4" GridPane.columnIndex="2" GridPane.rowIndex="3" />
 
        <CheckBox fx:id="checkBox4" mnemonicParsing="false" selected="true" GridPane.rowIndex="4" />
-       <ComboBox fx:id="elementName4" GridPane.columnIndex="1" GridPane.rowIndex="4" promptText="element name">
-           <items>
-               <FXCollections fx:factory="observableArrayList">
-                   <String fx:value="sourceIPv4Address" />
-                   <String fx:value="destinationIPv4Address" />
-                   <String fx:value="packetDeltaCount" />
-                   <String fx:value="octetDeltaCount" />
-               </FXCollections>
-           </items>
-       </ComboBox>
+       <ComboBox fx:id="elementName4" GridPane.columnIndex="1" GridPane.rowIndex="4" promptText="element name" />
        <TextField fx:id="elementSize4" promptText="element size" text="4" GridPane.columnIndex="2" GridPane.rowIndex="4" />
 
        <TextField fx:id="filename" promptText="filename" text="ipfix.pcap" GridPane.columnIndex="1" GridPane.rowIndex="6" />

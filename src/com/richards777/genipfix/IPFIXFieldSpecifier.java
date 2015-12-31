@@ -25,4 +25,8 @@ public class IPFIXFieldSpecifier {
         return b.array();
     }
 
+    public short getFieldLength() {
+        return fieldLength;
+    }
+
 }

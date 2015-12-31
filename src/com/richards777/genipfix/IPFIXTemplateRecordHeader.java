@@ -25,4 +25,8 @@ public class IPFIXTemplateRecordHeader {
         return b.array();
     }
 
+    public short getTemplateID() {
+        return templateID;
+    }
+
 }
