@@ -2,6 +2,7 @@ package com.richards777.genipfix;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -9,13 +10,16 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
+import java.util.TreeSet;
 
-public class Controller {
+public class Controller implements Initializable {
 
     @FXML
     private CheckBox checkBox1;
@@ -91,5 +95,16 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        TreeSet<String> treeSet = new TreeSet<>();
+        treeSet.addAll(IPFIXInformationElements.get().getKeys());
+
+        elementName1.getItems().setAll(treeSet);
+        elementName2.getItems().setAll(treeSet);
+        elementName3.getItems().setAll(treeSet);
+        elementName4.getItems().setAll(treeSet);
     }
 }
