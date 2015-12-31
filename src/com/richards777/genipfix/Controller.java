@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -11,6 +12,8 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
@@ -18,7 +21,7 @@ public class Controller {
     private CheckBox checkBox1;
 
     @FXML
-    private TextField elementName1;
+    private ComboBox<String> elementName1;
 
     @FXML
     private TextField elementSize1;
@@ -27,7 +30,7 @@ public class Controller {
     private CheckBox checkBox2;
 
     @FXML
-    private TextField elementName2;
+    private ComboBox<String> elementName2;
 
     @FXML
     private TextField elementSize2;
@@ -36,7 +39,7 @@ public class Controller {
     private CheckBox checkBox3;
 
     @FXML
-    private TextField elementName3;
+    private ComboBox<String> elementName3;
 
     @FXML
     private TextField elementSize3;
@@ -45,7 +48,7 @@ public class Controller {
     private CheckBox checkBox4;
 
     @FXML
-    private TextField elementName4;
+    private ComboBox<String> elementName4;
 
     @FXML
     private TextField elementSize4;
@@ -59,6 +62,13 @@ public class Controller {
     @FXML
     private void generateFile(ActionEvent event) {
         IPFIXTemplateSet templateSet = new IPFIXTemplateSet();
+        List<String> elementNames = new ArrayList<>(4);
+        elementNames.add(elementName1.getValue());
+        elementNames.add(elementName2.getValue());
+        elementNames.add(elementName3.getValue());
+        elementNames.add(elementName4.getValue());
+        templateSet.addTemplateRecord((short) 777, elementNames);
+
         IPFIXMessage message = new IPFIXMessage();
         message.addSet(templateSet);
 

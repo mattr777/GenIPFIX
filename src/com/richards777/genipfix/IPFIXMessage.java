@@ -23,7 +23,6 @@ public class IPFIXMessage {
 
     public byte[] getBuffer() {
         ByteBuffer b = ByteBuffer.allocate(lengthInBytes());
-//b.order(ByteOrder.BIG_ENDIAN); // optional, the initial order of a byte buffer is always BIG_ENDIAN.
         b.put(ipfixMessageHeader.getBuffer());
         for (IPFIXSet ipfixSet : ipfixSets) {
             b.put(ipfixSet.getBuffer());

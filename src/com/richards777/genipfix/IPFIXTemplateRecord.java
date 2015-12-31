@@ -7,12 +7,13 @@ public class IPFIXTemplateRecord {
     private IPFIXTemplateRecordHeader templateRecordHeader;
     private ArrayList<IPFIXFieldSpecifier> ipfixFieldSpecifiers = new ArrayList<>(4);
 
-    public IPFIXTemplateRecord() {
-        templateRecordHeader = new IPFIXTemplateRecordHeader((short) 777, (short) 4);
-        ipfixFieldSpecifiers.add(new IPFIXFieldSpecifier((short)8));
-        ipfixFieldSpecifiers.add(new IPFIXFieldSpecifier((short)12));
-        ipfixFieldSpecifiers.add(new IPFIXFieldSpecifier((short)2));
-        ipfixFieldSpecifiers.add(new IPFIXFieldSpecifier((short)1));
+    public IPFIXTemplateRecord(short templateID) {
+        templateRecordHeader = new IPFIXTemplateRecordHeader(templateID);
+    }
+
+    public void addField(int elementID) {
+        ipfixFieldSpecifiers.add(new IPFIXFieldSpecifier((short)elementID));
+        templateRecordHeader.incrementFieldCount();
     }
 
     public short lengthInBytes() {

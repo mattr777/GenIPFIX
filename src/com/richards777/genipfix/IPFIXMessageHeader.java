@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 public class IPFIXMessageHeader {
     private final short versionNumber = 10;  // IPFIX is version 10 of netflow
-    private short length = 0;  //Total length of the IPFIX Message, measured in octets, including Message Header and Set(s).
+    private short length = 16;  //Total length of the IPFIX Message, measured in octets, including Message Header and Set(s).
     private int exportTime = 1451499299;  //    Time at which the IPFIX Message Header leaves the Exporter,
     //    expressed in seconds since the UNIX epoch of 1 January 1970 at
 //    00:00 UTC, encoded as an unsigned 32-bit integer.
@@ -16,7 +16,7 @@ public class IPFIXMessageHeader {
 //    used by the Collecting Process to identify whether any IPFIX Data
 //    Records have been missed.  Template and Options Template Records
 //    do not increase the Sequence Number.
-    private int observationDomainID = 1; //    A 32-bit identifier of the Observation Domain that is locally
+    private int observationDomainID = 0x99999999; //    A 32-bit identifier of the Observation Domain that is locally
 //    unique to the Exporting Process.  The Exporting Process uses the
 //    Observation Domain ID to uniquely identify to the Collecting
 //    Process the Observation Domain that metered the Flows.  It is
@@ -39,7 +39,6 @@ public class IPFIXMessageHeader {
 
     public byte[] getBuffer() {
         ByteBuffer b = ByteBuffer.allocate(lengthInBytes());
-//b.order(ByteOrder.BIG_ENDIAN); // optional, the initial order of a byte buffer is always BIG_ENDIAN.
         b.putShort(versionNumber);
         b.putShort(length);
         b.putInt(exportTime);

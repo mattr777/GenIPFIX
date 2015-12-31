@@ -6,9 +6,12 @@ public class IPFIXTemplateRecordHeader {
     private short templateID = 0;
     private short fieldCount = 0;
 
-    public IPFIXTemplateRecordHeader(short templateID, short fieldCount) {
+    public IPFIXTemplateRecordHeader(short templateID) {
         this.templateID = templateID;
-        this.fieldCount = fieldCount;
+    }
+
+    public void incrementFieldCount() {
+        fieldCount++;
     }
 
     public short lengthInBytes() {
