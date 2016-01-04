@@ -28,16 +28,10 @@ public class Controller implements Initializable {
     private ComboBox<String> elementName1;
 
     @FXML
-    private TextField elementSize1;
-
-    @FXML
     private CheckBox checkBox2;
 
     @FXML
     private ComboBox<String> elementName2;
-
-    @FXML
-    private TextField elementSize2;
 
     @FXML
     private CheckBox checkBox3;
@@ -46,16 +40,10 @@ public class Controller implements Initializable {
     private ComboBox<String> elementName3;
 
     @FXML
-    private TextField elementSize3;
-
-    @FXML
     private CheckBox checkBox4;
 
     @FXML
     private ComboBox<String> elementName4;
-
-    @FXML
-    private TextField elementSize4;
 
     @FXML
     private TextField filename;
