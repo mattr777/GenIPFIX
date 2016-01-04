@@ -4,8 +4,12 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 public class IPFIXMessage {
-    private IPFIXMessageHeader ipfixMessageHeader = new IPFIXMessageHeader();
+    private IPFIXMessageHeader ipfixMessageHeader;
     private ArrayList<IPFIXSet> ipfixSets = new ArrayList<>(1);
+
+    public IPFIXMessage(int sequenceNumber) {
+        ipfixMessageHeader = new IPFIXMessageHeader(sequenceNumber);
+    }
 
     public void addSet(IPFIXSet ipfixSet) {
         ipfixSets.add(ipfixSet);

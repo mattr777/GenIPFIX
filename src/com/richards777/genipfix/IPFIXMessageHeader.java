@@ -8,7 +8,7 @@ public class IPFIXMessageHeader {
     private int exportTime = 1451499299;  //    Time at which the IPFIX Message Header leaves the Exporter,
     //    expressed in seconds since the UNIX epoch of 1 January 1970 at
 //    00:00 UTC, encoded as an unsigned 32-bit integer.
-    private int sequenceNumber = 1;   //    Incremental sequence counter modulo 2^32 of all IPFIX Data Records
+    private int sequenceNumber;   //    Incremental sequence counter modulo 2^32 of all IPFIX Data Records
     //    sent in the current stream from the current Observation Domain by
 //    the Exporting Process.  Each SCTP Stream counts sequence numbers
 //    separately, while all messages in a TCP connection or UDP session
@@ -28,6 +28,10 @@ public class IPFIXMessageHeader {
 //    the entire IPFIX Message, for example, when exporting the
 //    Exporting Process Statistics, or in the case of a hierarchy of
 //    Collectors when aggregated Data Records are exported.
+
+    public IPFIXMessageHeader(int sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
 
     public void incrementLength(short setLength) {
         length += setLength;

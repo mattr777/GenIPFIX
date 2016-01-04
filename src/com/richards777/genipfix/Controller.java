@@ -65,6 +65,32 @@ public class Controller implements Initializable {
 
     @FXML
     private void generateFile(ActionEvent event) {
+        IPFIXTemplateSet templateSet = createIpfixTemplateSet();
+
+        EthernetFrame templateEthernetFrame = createEthernetFrame(templateSet, 1);
+
+        int timeInSeconds = 1451499300;
+        PacketHeader templatePacketHeader = createPacketHeader(timeInSeconds, templateEthernetFrame.getLengthInBytes());
+
+        Path file = Paths.get(filename.getText());
+        try (OutputStream out = Files.newOutputStream(file)) {
+            out.write(GlobalHeader.getBuffer());
+            out.write(templatePacketHeader.getBuffer());
+            out.write(templateEthernetFrame.getBuffer());
+
+            for (int i = 0; i < 10; i++) {
+                EthernetFrame ethernetDataFrame = createEthernetDataFrame(templateSet, i+1);
+                timeInSeconds++;
+                PacketHeader dataPacketHeader = createPacketHeader(timeInSeconds, ethernetDataFrame.getLengthInBytes());
+                out.write(dataPacketHeader.getBuffer());
+                out.write(ethernetDataFrame.getBuffer());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private IPFIXTemplateSet createIpfixTemplateSet() {
         IPFIXTemplateSet templateSet = new IPFIXTemplateSet();
         List<String> elementNames = new ArrayList<>(4);
         elementNames.add(elementName1.getValue());
@@ -72,26 +98,21 @@ public class Controller implements Initializable {
         elementNames.add(elementName3.getValue());
         elementNames.add(elementName4.getValue());
         templateSet.addTemplateRecord((short) 777, elementNames);
+        return templateSet;
+    }
 
-        IPFIXMessage templateMessage = new IPFIXMessage();
-        templateMessage.addSet(templateSet);
+    private PacketHeader createPacketHeader(int tsSec, int lengthInBytes) {
+        return new PacketHeader(tsSec, 0, lengthInBytes, lengthInBytes);
+    }
 
-        UDPDatagram templateUDPDatagram = new UDPDatagram();
-        templateUDPDatagram.setBuffer(templateMessage.getBuffer());
-
-        IPv4Datagram templateIPv4Datagram = new IPv4Datagram();
-        templateIPv4Datagram.setBuffer(templateUDPDatagram.getBuffer());
-
-        EthernetFrame templateEthernetFrame = new EthernetFrame();
-        templateEthernetFrame.setPayload(templateIPv4Datagram);
-
-        PacketHeader templatePacketHeader = new PacketHeader(1451499300, 0, templateEthernetFrame.getLengthInBytes(), templateEthernetFrame.getLengthInBytes());
-
-
+    private EthernetFrame createEthernetDataFrame(IPFIXTemplateSet templateSet, int sequenceNumber) {
         IPFIXDataSet dataSet = new IPFIXDataSet(templateSet.getTemplateRecord());
+        return createEthernetFrame(dataSet, sequenceNumber);
+    }
 
-        IPFIXMessage dataMessage = new IPFIXMessage();
-        dataMessage.addSet(dataSet);
+    private EthernetFrame createEthernetFrame(IPFIXSet ipfixSet, int sequenceNumber) {
+        IPFIXMessage dataMessage = new IPFIXMessage(sequenceNumber);
+        dataMessage.addSet(ipfixSet);
 
         UDPDatagram dataUDPDatagram = new UDPDatagram();
         dataUDPDatagram.setBuffer(dataMessage.getBuffer());
@@ -101,22 +122,7 @@ public class Controller implements Initializable {
 
         EthernetFrame dataEthernetFrame = new EthernetFrame();
         dataEthernetFrame.setPayload(dataIPv4Datagram);
-
-        PacketHeader dataPacketHeader = new PacketHeader(1451499301, 0, dataEthernetFrame.getLengthInBytes(), dataEthernetFrame.getLengthInBytes());
-
-
-
-
-        Path file = Paths.get(filename.getText());
-        try (OutputStream out = Files.newOutputStream(file)) {
-            out.write(GlobalHeader.getBuffer());
-            out.write(templatePacketHeader.getBuffer());
-            out.write(templateEthernetFrame.getBuffer());
-            out.write(dataPacketHeader.getBuffer());
-            out.write(dataEthernetFrame.getBuffer());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return dataEthernetFrame;
     }
 
     @Override
@@ -125,8 +131,16 @@ public class Controller implements Initializable {
         treeSet.addAll(IPFIXInformationElements.get().getKeys());
 
         elementName1.getItems().setAll(treeSet);
+        elementName1.setValue("sourceIPv4Address");
+
         elementName2.getItems().setAll(treeSet);
+        elementName2.setValue("destinationIPv4Address");
+
         elementName3.getItems().setAll(treeSet);
+        elementName3.setValue("protocolIdentifier");
+
         elementName4.getItems().setAll(treeSet);
+        elementName4.setValue("vlanId");
+
     }
 }
