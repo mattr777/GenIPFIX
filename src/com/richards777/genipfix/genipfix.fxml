@@ -10,7 +10,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.collections.*?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.richards777.genipfix.Controller">
+<GridPane fx:id="gridPane" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.richards777.genipfix.Controller">
    <columnConstraints>
       <ColumnConstraints halignment="CENTER" />
       <ColumnConstraints />
@@ -40,8 +40,9 @@
        <CheckBox fx:id="checkBox4" mnemonicParsing="false" selected="true" GridPane.rowIndex="4" />
        <ComboBox fx:id="elementName4" GridPane.columnIndex="1" GridPane.rowIndex="4" promptText="element name" />
 
-       <Button fx:id="genButton" mnemonicParsing="false" onAction="#generateFile" prefHeight="25.0" prefWidth="147.0" text="Generate" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-       <TextField fx:id="filename" promptText="filename" text="ipfix.pcap" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+       <Button fx:id="addRowBtn" mnemonicParsing="false" onAction="#addGridRow" prefHeight="25.0" prefWidth="147.0" text="Add Row" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+       <Button fx:id="genButton" mnemonicParsing="false" onAction="#generateFile" prefHeight="25.0" prefWidth="147.0" text="Generate" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+       <TextField fx:id="filename" promptText="filename" text="ipfix.pcap" GridPane.columnIndex="1" GridPane.rowIndex="8" />
    </children>
    <padding>
       <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />

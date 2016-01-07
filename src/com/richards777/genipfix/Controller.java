@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -50,6 +51,14 @@ public class Controller implements Initializable {
 
     @FXML
     private Button genButton;
+
+    @FXML
+    private GridPane gridPane;
+
+    @FXML
+    private void addGridRow(ActionEvent event) {
+        gridPane.getChildren();
+    }
 
     @FXML
     private void generateFile(ActionEvent event) {
