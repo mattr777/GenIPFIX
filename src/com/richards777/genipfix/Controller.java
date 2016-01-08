@@ -1,8 +1,10 @@
 package com.richards777.genipfix;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -24,25 +26,13 @@ import java.util.TreeSet;
 public class Controller implements Initializable {
 
     @FXML
-    private CheckBox checkBox1;
-
-    @FXML
     private ComboBox<String> elementName1;
-
-    @FXML
-    private CheckBox checkBox2;
 
     @FXML
     private ComboBox<String> elementName2;
 
     @FXML
-    private CheckBox checkBox3;
-
-    @FXML
     private ComboBox<String> elementName3;
-
-    @FXML
-    private CheckBox checkBox4;
 
     @FXML
     private ComboBox<String> elementName4;
@@ -51,16 +41,10 @@ public class Controller implements Initializable {
     private TextField filename;
 
     @FXML
-    private Button genButton;
-
-    @FXML
-    private GridPane gridPane;
-
-    @FXML
     private VBox vBox;
 
     @FXML
-    private void addGridRow(ActionEvent event) {
+    private void addField(ActionEvent event) {
         ComboBox<String> stringComboBox = new ComboBox<>();
         stringComboBox.setPromptText("element name");
         TreeSet<String> treeSet = new TreeSet<>();
@@ -101,10 +85,11 @@ public class Controller implements Initializable {
     private IPFIXTemplateSet createIpfixTemplateSet() {
         IPFIXTemplateSet templateSet = new IPFIXTemplateSet();
         List<String> elementNames = new ArrayList<>(4);
-        elementNames.add(elementName1.getValue());
-        elementNames.add(elementName2.getValue());
-        elementNames.add(elementName3.getValue());
-        elementNames.add(elementName4.getValue());
+        ObservableList<Node> nodeObservableList = vBox.getChildren();
+        for (Node node : nodeObservableList) {
+            ComboBox<String> stringComboBox = (ComboBox<String>)node;
+            elementNames.add(stringComboBox.getValue());
+        }
         templateSet.addTemplateRecord((short) 777, elementNames);
         return templateSet;
     }

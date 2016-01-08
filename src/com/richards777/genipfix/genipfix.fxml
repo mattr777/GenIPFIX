@@ -11,22 +11,8 @@
 <?import javafx.collections.*?>
 
 <GridPane fx:id="gridPane" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.richards777.genipfix.Controller">
-   <columnConstraints>
-      <ColumnConstraints halignment="CENTER" />
-      <ColumnConstraints />
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints />
-   </rowConstraints>
    <children>
-       <VBox fx:id="vBox" spacing="10.0">
+       <VBox fx:id="vBox" spacing="10.0"  GridPane.columnIndex="0" GridPane.rowIndex="0" >
            <children>
                <ComboBox fx:id="elementName1" promptText="element name"/>
                <ComboBox fx:id="elementName2" promptText="element name"/>
@@ -35,9 +21,9 @@
            </children>
        </VBox>
 
-       <Button fx:id="addRowBtn" mnemonicParsing="false" onAction="#addGridRow" prefHeight="25.0" prefWidth="147.0" text="Add Row" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-       <Button fx:id="genButton" mnemonicParsing="false" onAction="#generateFile" prefHeight="25.0" prefWidth="147.0" text="Generate" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-       <TextField fx:id="filename" promptText="filename" text="ipfix.pcap" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+       <Button mnemonicParsing="false" onAction="#addField" prefHeight="25.0" prefWidth="147.0" text="Add Row" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+       <Button mnemonicParsing="false" onAction="#generateFile" prefHeight="25.0" prefWidth="147.0" text="Generate" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+       <TextField fx:id="filename" promptText="filename" text="ipfix.pcap" GridPane.columnIndex="0" GridPane.rowIndex="7" />
    </children>
    <padding>
       <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
