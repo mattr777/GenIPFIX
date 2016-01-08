@@ -29,4 +29,9 @@ public class IPFIXFieldSpecifier {
         return fieldLength;
     }
 
+    public short getInformationElementID() {
+        return informationElementID;
+    }
+
+
 }

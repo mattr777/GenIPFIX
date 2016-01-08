@@ -28,9 +28,14 @@ public class IPFIXDataSet extends IPFIXSet {
         dataBuffer.put(setHeader.getBuffer());
         for (IPFIXFieldSpecifier ipfixFieldSpecifier : ipfixFieldSpecifiers) {
             int fieldLength = ipfixFieldSpecifier.getFieldLength();
+            short informationElementID = ipfixFieldSpecifier.getInformationElementID();
             ByteBuffer b = ByteBuffer.allocate(fieldLength);
-            for (int i = 0; i < fieldLength; i++) {
-                b.put((byte)i);
+            if (informationElementID == IPFIXInformationElements.get().getElementID("protocolIdentifier")) {
+                b.put((byte) 17);
+            } else {
+                for (int i = 0; i < fieldLength; i++) {
+                    b.put((byte) i);
+                }
             }
             dataBuffer.put(b.array());
         }

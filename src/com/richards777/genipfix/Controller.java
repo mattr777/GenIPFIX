@@ -87,8 +87,8 @@ public class Controller implements Initializable {
         List<String> elementNames = new ArrayList<>(4);
         ObservableList<Node> nodeObservableList = vBox.getChildren();
         for (Node node : nodeObservableList) {
-            ComboBox<String> stringComboBox = (ComboBox<String>)node;
-            elementNames.add(stringComboBox.getValue());
+            ComboBox<?> stringComboBox = (ComboBox<?>)node;
+            elementNames.add(stringComboBox.getValue().toString());
         }
         templateSet.addTemplateRecord((short) 777, elementNames);
         return templateSet;
