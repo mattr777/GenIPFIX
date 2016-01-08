@@ -8,6 +8,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -56,8 +57,18 @@ public class Controller implements Initializable {
     private GridPane gridPane;
 
     @FXML
+    private VBox vBox;
+
+    @FXML
     private void addGridRow(ActionEvent event) {
-        gridPane.getChildren();
+        ComboBox<String> stringComboBox = new ComboBox<>();
+        stringComboBox.setPromptText("element name");
+        TreeSet<String> treeSet = new TreeSet<>();
+        treeSet.addAll(IPFIXInformationElements.get().getKeys());
+
+        stringComboBox.getItems().setAll(treeSet);
+
+        vBox.getChildren().add(stringComboBox);
     }
 
     @FXML
