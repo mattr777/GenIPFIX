@@ -271,7 +271,7 @@ public class IPFIXInformationElements {
         return elementIDMap.get(elementName);
     }
 
-    public Set<String> getKeys() {
+    public Set<String> getNames() {
         return elementIDMap.keySet();
     }
 
