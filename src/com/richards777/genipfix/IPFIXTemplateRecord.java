@@ -11,8 +11,8 @@ public class IPFIXTemplateRecord {
         templateRecordHeader = new IPFIXTemplateRecordHeader(templateID);
     }
 
-    public void addField(int elementID) {
-        ipfixFieldSpecifiers.add(new IPFIXFieldSpecifier((short)elementID));
+    public void addField(IPFIXFieldSpecifier ipfixFieldSpecifier) {
+        ipfixFieldSpecifiers.add(ipfixFieldSpecifier);
         templateRecordHeader.incrementFieldCount();
     }
 

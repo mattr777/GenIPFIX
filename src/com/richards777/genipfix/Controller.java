@@ -109,13 +109,36 @@ public class Controller implements Initializable {
 
     private IPFIXTemplateSet createIpfixTemplateSet() {
         IPFIXTemplateSet templateSet = new IPFIXTemplateSet();
-        List<String> elementNames = new ArrayList<>(4);
-        ObservableList<Node> nodeObservableList = vBox.getChildren();
-        for (Node node : nodeObservableList) {
-            ComboBox<?> stringComboBox = (ComboBox<?>)node;
-            elementNames.add(stringComboBox.getValue().toString());
+        List<IPFIXFieldSpecifier> elements = new ArrayList<>(4);
+        ObservableList<Node> vBoxChildren = vBox.getChildren();
+        for (Node vboxChild : vBoxChildren) {
+            if (vboxChild instanceof ComboBox) {
+                ComboBox<String> ianaComboBox = (ComboBox<String>) vboxChild;
+                int elementID = IPFIXInformationElements.get().getElementID(ianaComboBox.getValue());
+                elements.add(new IPFIXFieldSpecifier((short)elementID));
+            } else if (vboxChild instanceof HBox) {
+                HBox hBox = (HBox) vboxChild;
+                int enterpriseNumber = 0;
+                int elementID = 0;
+                int fieldLength = 0;
+                ObservableList<Node> hBoxChildren = hBox.getChildren();
+                for (Node hBoxChild : hBoxChildren) {
+                    if (hBoxChild instanceof ComboBox) {
+                        ComboBox<String> entComboBox = (ComboBox<String>) hBoxChild;
+                        enterpriseNumber = PrivateEnterpriseNumbers.get().getNumber(entComboBox.getValue());
+                    } else {
+                        TextField textField = (TextField) hBoxChild;
+                        if (textField.getPromptText().equals("element ID")) {
+                            elementID = Integer.parseInt(textField.getText());
+                        } else {
+                            fieldLength = Integer.parseInt(textField.getText());
+                        }
+                    }
+                }
+                elements.add(new IPFIXFieldSpecifier((short)elementID, (short)fieldLength, enterpriseNumber));
+            }
         }
-        templateSet.addTemplateRecord((short) 777, elementNames);
+        templateSet.addTemplateRecord((short) 777, elements);
         return templateSet;
     }
 

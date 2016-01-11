@@ -38,5 +38,9 @@ public class PrivateEnterpriseNumbers {
         return numberMap.keySet();
     }
 
+    public int getNumber(String enterpriseName) {
+        return numberMap.get(enterpriseName);
+    }
+
 
 }

@@ -20,11 +20,10 @@ public class IPFIXTemplateSet extends IPFIXSet {
         return b.array();
     }
 
-    public void addTemplateRecord(short templateID, List<String> elementNames){
+    public void addTemplateRecord(short templateID, List<IPFIXFieldSpecifier> ipfixFields){
         IPFIXTemplateRecord ipfixTemplateRecord  = new IPFIXTemplateRecord(templateID);
-        for (String elementName : elementNames) {
-            int elementID = IPFIXInformationElements.get().getElementID(elementName);
-            ipfixTemplateRecord.addField(elementID);
+        for (IPFIXFieldSpecifier ipfixField : ipfixFields) {
+            ipfixTemplateRecord.addField(ipfixField);
         }
         templateRecords.add(ipfixTemplateRecord);
         setHeader.addRecordLength(ipfixTemplateRecord.lengthInBytes());
