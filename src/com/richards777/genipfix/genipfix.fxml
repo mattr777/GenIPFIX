@@ -5,8 +5,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="433.0" prefWidth="406.0" spacing="10.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.richards777.genipfix.Controller">
+<VBox prefHeight="433.0" prefWidth="406.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.richards777.genipfix.Controller">
     <children>
+        <MenuBar>
+         <menus>
+            <Menu mnemonicParsing="true" text="_File">
+              <items>
+                  <MenuItem mnemonicParsing="false" text="Open" />
+                  <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" text="Save" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Exit" />
+              </items>
+            </Menu>
+         </menus>
+        </MenuBar>
         <VBox fx:id="vBox" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
         <Button mnemonicParsing="false" onAction="#addIANAField" prefHeight="25.0" prefWidth="147.0" text="Add IANA Field" />
