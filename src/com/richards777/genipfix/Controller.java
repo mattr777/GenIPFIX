@@ -80,6 +80,11 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    private void exitProgram(ActionEvent event) {
+        System.exit(0);
+    }
+
+    @FXML
     private void generateFile(ActionEvent event) {
         IPFIXTemplateSet templateSet = createIpfixTemplateSet();
 
