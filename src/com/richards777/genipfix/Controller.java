@@ -10,12 +10,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -85,6 +88,21 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    private void openTemplateFile(ActionEvent event) {
+        System.exit(0);
+    }
+
+    @FXML
+    private void saveTemplateFile(ActionEvent event) {
+        Path path = Paths.get("IPFIXTemplate.json");
+        try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+            writer.write("{}");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void generateFile(ActionEvent event) {
         IPFIXTemplateSet templateSet = createIpfixTemplateSet();
 
@@ -93,9 +111,9 @@ public class Controller implements Initializable {
         int timeInSeconds = 1451499300;
         PacketHeader templatePacketHeader = createPacketHeader(timeInSeconds, templateEthernetFrame.getLengthInBytes());
 
-        Path file = Paths.get(filename.getText());
+        Path path = Paths.get(filename.getText());
         int nRecords = Integer.parseInt(nDataRecords.getText());
-        try (OutputStream out = Files.newOutputStream(file)) {
+        try (OutputStream out = Files.newOutputStream(path)) {
             out.write(GlobalHeader.getBuffer());
             out.write(templatePacketHeader.getBuffer());
             out.write(templateEthernetFrame.getBuffer());
