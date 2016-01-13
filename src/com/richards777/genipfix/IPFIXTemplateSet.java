@@ -22,12 +22,9 @@ public class IPFIXTemplateSet extends IPFIXSet {
 
     public void addTemplateRecord(short templateID, List<IPFIXFieldSpecifier> ipfixFields){
         IPFIXTemplateRecord ipfixTemplateRecord  = new IPFIXTemplateRecord(templateID);
-        for (IPFIXFieldSpecifier ipfixField : ipfixFields) {
-            ipfixTemplateRecord.addField(ipfixField);
-        }
+        ipfixFields.forEach(ipfixTemplateRecord::addField);
         templateRecords.add(ipfixTemplateRecord);
         setHeader.addRecordLength(ipfixTemplateRecord.lengthInBytes());
-
     }
 
     public IPFIXTemplateSet() {
@@ -36,5 +33,30 @@ public class IPFIXTemplateSet extends IPFIXSet {
 
     public IPFIXTemplateRecord getTemplateRecord() {
         return templateRecords.get(0);
+    }
+
+    public String getAsJsonString() {
+        String indent = "    ";
+        StringBuilder sb = new StringBuilder();
+        sb.append(indent);
+        sb.append("[\n");
+        int recordNum = 0;
+        for (IPFIXTemplateRecord templateRecord : templateRecords) {
+            recordNum++;
+            String subIndent = "        ";
+            sb.append(subIndent);
+            sb.append("{\n");
+            sb.append(templateRecord.getAsJsonString(subIndent));
+            sb.append("\n");
+            sb.append(subIndent);
+            if (recordNum < templateRecords.size()) {
+                sb.append("},\n");
+            } else {
+                sb.append("}\n");
+            }
+        }
+        sb.append(indent);
+        sb.append("]\n");
+        return sb.toString();
     }
 }

@@ -5,5 +5,4 @@ abstract class IPFIXSet {
 
     abstract short lengthInBytes();
     abstract byte[] getBuffer();
-
 }

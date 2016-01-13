@@ -21,7 +21,7 @@ public class IPFIXFieldSpecifier {
     }
 
     public short lengthInBytes() {
-        if ((informationElementID & 0x8000) == 0x8000) {
+        if (isEnterpriseField()) {
             return (short) 8;
         } else {
             return (short) 4;
@@ -32,7 +32,7 @@ public class IPFIXFieldSpecifier {
         ByteBuffer b = ByteBuffer.allocate(lengthInBytes());
         b.putShort(informationElementID);
         b.putShort(fieldLength);
-        if ((informationElementID & 0x8000) == 0x8000) {
+        if (isEnterpriseField()) {
             b.putInt(enterpriseNumber);
         }
         return b.array();
@@ -46,5 +46,37 @@ public class IPFIXFieldSpecifier {
         return informationElementID;
     }
 
+    public String getAsJsonString(String parentIndent) {
+        String indent = parentIndent + "    ";
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(indent);
+        sb.append("\"isEnterprise\": ");
+        sb.append(isEnterpriseField());
+        sb.append(",\n");
+
+        sb.append(indent);
+        sb.append("\"informationElementID\": ");
+        sb.append(informationElementID & 0x7FFF);
+        sb.append(",\n");
+
+        sb.append(indent);
+        sb.append("\"fieldLength\": ");
+        sb.append(fieldLength);
+
+        if (isEnterpriseField()) {
+            sb.append(",\n");
+            sb.append(indent);
+            sb.append("\"enterpriseNumber\": ");
+            sb.append(enterpriseNumber);
+        }
+
+        sb.append("\n");
+        return sb.toString();
+    }
+
+    private boolean isEnterpriseField() {
+        return (informationElementID & 0x8000) == 0x8000;
+    }
 
 }

@@ -29,4 +29,18 @@ public class IPFIXTemplateRecordHeader {
         return templateID;
     }
 
+    public String getAsJsonString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("            \"templateID\": ");
+        sb.append(templateID);
+        sb.append(",\n");
+        sb.append("            \"fieldCount\": ");
+        sb.append(fieldCount);
+        sb.append("\n");
+        return sb.toString();
+    }
+
+    public int getFieldCount() {
+        return fieldCount;
+    }
 }

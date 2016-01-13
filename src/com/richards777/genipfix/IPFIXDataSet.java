@@ -2,7 +2,6 @@ package com.richards777.genipfix;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.List;
 
 public class IPFIXDataSet extends IPFIXSet {
     private ByteBuffer dataBuffer;
@@ -23,7 +22,7 @@ public class IPFIXDataSet extends IPFIXSet {
             recordLength += ipfixFieldSpecifier.getFieldLength();
         }
 
-        dataBuffer = ByteBuffer.allocate(recordLength + setHeader.lengthInBytes());
+        dataBuffer = ByteBuffer.allocate(recordLength + setHeader.getLengthInBytes());
         setHeader.addRecordLength((short)recordLength);
         dataBuffer.put(setHeader.getBuffer());
         for (IPFIXFieldSpecifier ipfixFieldSpecifier : ipfixFieldSpecifiers) {
