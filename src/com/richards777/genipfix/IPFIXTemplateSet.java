@@ -36,14 +36,13 @@ public class IPFIXTemplateSet extends IPFIXSet {
     }
 
     public String getAsJsonString() {
-        String indent = "    ";
+        String indent = "  ";
         StringBuilder sb = new StringBuilder();
-        sb.append(indent);
         sb.append("[\n");
         int recordNum = 0;
         for (IPFIXTemplateRecord templateRecord : templateRecords) {
             recordNum++;
-            String subIndent = "        ";
+            String subIndent = indent + "  ";
             sb.append(subIndent);
             sb.append("{\n");
             sb.append(templateRecord.getAsJsonString(subIndent));

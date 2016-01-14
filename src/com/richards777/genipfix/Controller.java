@@ -98,7 +98,7 @@ public class Controller implements Initializable {
         Path path = Paths.get("IPFIXTemplate.json");
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
             writer.write("{\n");
-            writer.write("    \"templateSet\":\n");
+            writer.write("  \"templateSet\": ");
             writer.write(templateSet.getAsJsonString());
             writer.write("}\n");
         } catch (IOException e) {

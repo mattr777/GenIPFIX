@@ -29,14 +29,20 @@ public class IPFIXTemplateRecordHeader {
         return templateID;
     }
 
-    public String getAsJsonString() {
+    public String getAsJsonString(String parentIndent) {
+        String indent = parentIndent + "  ";
         StringBuilder sb = new StringBuilder();
-        sb.append("            \"templateID\": ");
+
+        sb.append(indent);
+        sb.append("\"templateID\": ");
         sb.append(templateID);
         sb.append(",\n");
-        sb.append("            \"fieldCount\": ");
+
+        sb.append(indent);
+        sb.append("\"fieldCount\": ");
         sb.append(fieldCount);
-        sb.append("\n");
+        sb.append(",\n");
+
         return sb.toString();
     }
 

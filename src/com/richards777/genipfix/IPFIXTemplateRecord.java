@@ -43,16 +43,17 @@ public class IPFIXTemplateRecord {
     }
 
     public String getAsJsonString(String parentIndent) {
-        String indent = parentIndent + "    ";
         int nFields = templateRecordHeader.getFieldCount();
         int fieldNum = 0;
         StringBuilder sb = new StringBuilder();
-        sb.append(templateRecordHeader.getAsJsonString());
+        sb.append(templateRecordHeader.getAsJsonString(parentIndent));
+        String indent = parentIndent + "  ";
         sb.append(indent);
+        sb.append("\"fields\": ");
         sb.append("[\n");
         for (IPFIXFieldSpecifier ipfixFieldSpecifier : ipfixFieldSpecifiers) {
             fieldNum++;
-            String subIndent = indent + "    ";
+            String subIndent = indent + "  ";
             sb.append(subIndent);
             sb.append("{\n");
             sb.append(ipfixFieldSpecifier.getAsJsonString(subIndent));

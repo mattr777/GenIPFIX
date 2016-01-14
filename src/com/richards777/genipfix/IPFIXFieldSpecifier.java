@@ -47,7 +47,7 @@ public class IPFIXFieldSpecifier {
     }
 
     public String getAsJsonString(String parentIndent) {
-        String indent = parentIndent + "    ";
+        String indent = parentIndent + "  ";
         StringBuilder sb = new StringBuilder();
 
         sb.append(indent);
