@@ -20,6 +20,10 @@
             </Menu>
          </menus>
         </MenuBar>
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <Label text="Template ID" />
+            <TextField fx:id="templateID" promptText="template ID" text="777" />
+        </HBox>
         <VBox fx:id="vBox" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
         <Button mnemonicParsing="false" onAction="#addIANAField" prefHeight="25.0" prefWidth="147.0" text="Add IANA Field" />

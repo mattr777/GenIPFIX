@@ -42,5 +42,7 @@ public class PrivateEnterpriseNumbers {
         return numberMap.get(enterpriseName);
     }
 
-
+    public String getName(Integer enterpriseNumber) {
+        return nameMap.get(enterpriseNumber);
+    }
 }

@@ -46,7 +46,6 @@ public class IPFIXTemplateSet extends IPFIXSet {
             sb.append(subIndent);
             sb.append("{\n");
             sb.append(templateRecord.getAsJsonString(subIndent));
-            sb.append("\n");
             sb.append(subIndent);
             if (recordNum < templateRecords.size()) {
                 sb.append("},\n");

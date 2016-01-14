@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,6 +29,9 @@ public class Controller implements Initializable {
 
     @FXML
     private TextField nDataRecords;
+
+    @FXML
+    private TextField templateID;
 
     @FXML
     private TextField filename;
@@ -60,6 +64,10 @@ public class Controller implements Initializable {
     }
 
     private void createEntField(String enterpriseName) {
+        createEntField(enterpriseName, null, null);
+    }
+
+    private void createEntField(String enterpriseName, Integer elementID, Integer fieldLength) {
         HBox hBox = new HBox(10.0);
         ComboBox<String> stringComboBox = new ComboBox<>();
         stringComboBox.setPromptText("enterprise");
@@ -71,13 +79,19 @@ public class Controller implements Initializable {
         }
         hBox.getChildren().add(stringComboBox);
 
-        TextField elementId = new TextField();
-        elementId.setPromptText("element ID");
-        hBox.getChildren().add(elementId);
+        TextField elementIDField = new TextField();
+        elementIDField.setPromptText("element ID");
+        if (elementID != null) {
+            elementIDField.setText(elementID.toString());
+        }
+        hBox.getChildren().add(elementIDField);
 
-        TextField fieldLength = new TextField();
-        fieldLength.setPromptText("field length");
-        hBox.getChildren().add(fieldLength);
+        TextField fieldLengthField = new TextField();
+        fieldLengthField.setPromptText("field length");
+        if (fieldLength != null) {
+            fieldLengthField.setText(fieldLength.toString());
+        }
+        hBox.getChildren().add(fieldLengthField);
 
         vBox.getChildren().add(hBox);
     }
@@ -89,7 +103,67 @@ public class Controller implements Initializable {
 
     @FXML
     private void openTemplateFile(ActionEvent event) {
-        System.exit(0);
+        vBox.getChildren().clear();
+        Path path = Paths.get("IPFIXTemplate.json");
+        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+            advanceToKeyword(reader, "templateSet");
+            Integer templateID = getInt(reader, "templateID");
+            this.templateID.setText(templateID.toString());
+            int fieldCount = getInt(reader, "fieldCount");
+            advanceToKeyword(reader, "fields");
+            for (int i = 0; i < fieldCount; i++) {
+                boolean isEnterprise = getBoolean(reader, "isEnterprise");
+                int informationElementID = getInt(reader, "informationElementID");
+                int fieldLength = getInt(reader, "fieldLength");
+                int enterpriseNumber = 0;
+                if (isEnterprise) {
+                    enterpriseNumber = getInt(reader, "enterpriseNumber");
+                    String enterpriseName = PrivateEnterpriseNumbers.get().getName(enterpriseNumber);
+                    createEntField(enterpriseName, informationElementID, fieldLength);
+                } else {
+                    String fieldName = IPFIXInformationElements.get().getName(informationElementID);
+                    createIANAField(fieldName);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void advanceToKeyword(BufferedReader reader, String keyword) throws IOException {
+        String line = reader.readLine();
+        while (line != null) {
+            if (line.contains(keyword)) {
+                break;
+            }
+            line = reader.readLine();
+        }
+    }
+
+    private int getInt(BufferedReader reader, String keyword) throws IOException {
+        String line = reader.readLine();
+        while (line != null) {
+            if (line.contains(keyword)) {
+                String delims = "[ \":,]+";
+                String[] tokens = line.split(delims);
+                return Integer.parseInt(tokens[2]);
+            }
+            line = reader.readLine();
+        }
+        return 0;
+    }
+
+    private boolean getBoolean(BufferedReader reader, String keyword) throws IOException {
+        String line = reader.readLine();
+        while (line != null) {
+            if (line.contains(keyword)) {
+                String delims = "[ \":,]+";
+                String[] tokens = line.split(delims);
+                return Boolean.parseBoolean(tokens[2]);
+            }
+            line = reader.readLine();
+        }
+        return false;
     }
 
     @FXML
@@ -165,7 +239,8 @@ public class Controller implements Initializable {
                 elements.add(new IPFIXFieldSpecifier((short)elementID, (short)fieldLength, enterpriseNumber));
             }
         }
-        templateSet.addTemplateRecord((short) 777, elements);
+        int templateID = Integer.parseInt(this.templateID.getText());
+        templateSet.addTemplateRecord((short) templateID, elements);
         return templateSet;
     }
 
