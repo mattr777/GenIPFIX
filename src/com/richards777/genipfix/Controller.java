@@ -9,11 +9,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -102,8 +100,18 @@ public class Controller implements Initializable {
 
     @FXML
     private void openTemplateFile(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Template File");
+        fileChooser.setInitialFileName("IPFIXTemplate.json");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Template Files", "*.json"),
+                new FileChooser.ExtensionFilter("All Files", "*.*"));
+        File selectedFile = fileChooser.showOpenDialog(vBox.getScene().getWindow());
+        if (selectedFile == null) {
+            return;
+        }
         vBox.getChildren().clear();
-        Path path = Paths.get("IPFIXTemplate.json");
+        Path path = Paths.get(selectedFile.getPath());
         try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             advanceToKeyword(reader, "templateSet");
             Integer templateID = getInt(reader, "templateID");
