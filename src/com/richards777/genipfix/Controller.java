@@ -103,6 +103,7 @@ public class Controller implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Template File");
         fileChooser.setInitialFileName("IPFIXTemplate.json");
+        fileChooser.setInitialDirectory(new File("").getAbsoluteFile());
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Template Files", "*.json"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
