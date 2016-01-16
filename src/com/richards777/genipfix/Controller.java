@@ -99,6 +99,11 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    private void  closeTemplateFile(ActionEvent event) {
+        vBox.getChildren().clear();
+    }
+
+    @FXML
     private void openTemplateFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Template File");

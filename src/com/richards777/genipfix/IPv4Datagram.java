@@ -1,7 +1,6 @@
 package com.richards777.genipfix;
 
 import java.nio.ByteBuffer;
-import java.util.zip.CRC32;
 
 public class IPv4Datagram implements EthernetPayload {
     private byte versionIHL = 0x45;
