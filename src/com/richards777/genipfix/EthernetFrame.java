@@ -4,10 +4,10 @@ import java.nio.ByteBuffer;
 import java.util.zip.CRC32;
 
 public class EthernetFrame {
-    private int destMAC1 = 0x08000815;
-    private short destMAC2 = (short)0xcafe;
-    private int srcMAC1 = 0x08000815;
-    private short srcMAC2 = (short)0xf00d;
+    private int destMAC1 = 0x080027aa;
+    private short destMAC2 = (short)0x6fff;
+    private int srcMAC1 = 0x080027b5;
+    private short srcMAC2 = (short)0x56ee;
     private short lengthOrType = (short) 0x0800; // IPv4 = 0800, IPv6 = 86DD, ARP = 0806
     private EthernetPayload ethernetPayload;
     private CRC32 fcs = new CRC32();

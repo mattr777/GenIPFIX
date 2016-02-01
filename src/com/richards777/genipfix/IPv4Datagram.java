@@ -11,8 +11,8 @@ public class IPv4Datagram implements EthernetPayload {
     private byte timeToLive = 64; // RFC1122 recommended value is 64
     private byte protocol = 17; // 17 = UDP, 6 = TCP
     private short headerChecksum = 0;
-    private int srcIPAddress = 0x08000815;
-    private int destIPAddress = 0x08000816;
+    private int srcIPAddress = 0xc0a8000e;
+    private int destIPAddress = 0xc0a80033;
     private byte[] payload;
 
     public short getLengthInBytes() {

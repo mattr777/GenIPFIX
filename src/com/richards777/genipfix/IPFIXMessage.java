@@ -21,7 +21,7 @@ public class IPFIXMessage {
         for (IPFIXSet ipfixSet : ipfixSets) {
             lengthInBytes += ipfixSet.lengthInBytes();
         }
-        lengthInBytes += ipfixMessageHeader.lengthInBytes();
+        lengthInBytes += ipfixMessageHeader.getLengthInBytes();
         return lengthInBytes;
     }
 

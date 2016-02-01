@@ -28,6 +28,9 @@ public class Controller implements Initializable {
     private TextField nDataRecords;
 
     @FXML
+    private TextField destPort;
+
+    @FXML
     private TextField templateID;
 
     @FXML
@@ -196,22 +199,27 @@ public class Controller implements Initializable {
     @FXML
     private void generateFile(ActionEvent event) {
         IPFIXTemplateSet templateSet = createIpfixTemplateSet();
+        List<IPFIXTemplateSet> ipfixTemplateSets = new ArrayList<>();
+        ipfixTemplateSets.add(templateSet);
 
-        EthernetFrame templateEthernetFrame = createEthernetFrame(templateSet, 1);
+        short udpPort = Short.parseShort(destPort.getText());
+
+        EthernetFrame templateEthernetFrame = createEthernetFrame(ipfixTemplateSets, 1, udpPort);
 
         int timeInSeconds = 1451499300;
         PacketHeader templatePacketHeader = createPacketHeader(timeInSeconds, templateEthernetFrame.getLengthInBytes());
 
         Path path = Paths.get(filename.getText());
         int nRecords = Integer.parseInt(nDataRecords.getText());
+        int scenario = 1;
         try (OutputStream out = Files.newOutputStream(path)) {
             out.write(GlobalHeader.getBuffer());
             out.write(templatePacketHeader.getBuffer());
             out.write(templateEthernetFrame.getBuffer());
 
             for (int i = 0; i < nRecords; i++) {
-                EthernetFrame ethernetDataFrame = createEthernetDataFrame(templateSet, i+1);
                 timeInSeconds++;
+                EthernetFrame ethernetDataFrame = createEthernetDataFrame(templateSet, i+1, scenario, timeInSeconds, udpPort);
                 PacketHeader dataPacketHeader = createPacketHeader(timeInSeconds, ethernetDataFrame.getLengthInBytes());
                 out.write(dataPacketHeader.getBuffer());
                 out.write(ethernetDataFrame.getBuffer());
@@ -261,24 +269,26 @@ public class Controller implements Initializable {
         return new PacketHeader(tsSec, 0, lengthInBytes, lengthInBytes);
     }
 
-    private EthernetFrame createEthernetDataFrame(IPFIXTemplateSet templateSet, int sequenceNumber) {
-        IPFIXDataSet dataSet = new IPFIXDataSet(templateSet.getTemplateRecord());
-        return createEthernetFrame(dataSet, sequenceNumber);
+    private EthernetFrame createEthernetDataFrame(IPFIXTemplateSet templateSet, int sequenceNumber, int scenario, int timeStamp, short udpPort) {
+        IPFIXDataSet dataSet = new IPFIXDataSet(templateSet.getTemplateRecord(), scenario, timeStamp);
+        List<IPFIXDataSet> ipfixDataSets = new ArrayList<>();
+        ipfixDataSets.add(dataSet);
+        return createEthernetFrame(ipfixDataSets, sequenceNumber, udpPort);
     }
 
-    private EthernetFrame createEthernetFrame(IPFIXSet ipfixSet, int sequenceNumber) {
-        IPFIXMessage dataMessage = new IPFIXMessage(sequenceNumber);
-        dataMessage.addSet(ipfixSet);
+    private EthernetFrame createEthernetFrame(List<? extends IPFIXSet> ipfixSets, int sequenceNumber, short udpPort) {
+        IPFIXMessage ipfixMessage = new IPFIXMessage(sequenceNumber);
+        ipfixSets.forEach(ipfixMessage::addSet);
 
-        UDPDatagram dataUDPDatagram = new UDPDatagram();
-        dataUDPDatagram.setBuffer(dataMessage.getBuffer());
+        UDPDatagram udpDatagram = new UDPDatagram(udpPort);
+        udpDatagram.setPayload(ipfixMessage.getBuffer());
 
-        IPv4Datagram dataIPv4Datagram = new IPv4Datagram();
-        dataIPv4Datagram.setBuffer(dataUDPDatagram.getBuffer());
+        IPv4Datagram iPv4Datagram = new IPv4Datagram();
+        iPv4Datagram.setBuffer(udpDatagram.getBuffer());
 
-        EthernetFrame dataEthernetFrame = new EthernetFrame();
-        dataEthernetFrame.setPayload(dataIPv4Datagram);
-        return dataEthernetFrame;
+        EthernetFrame ethernetFrame = new EthernetFrame();
+        ethernetFrame.setPayload(iPv4Datagram);
+        return ethernetFrame;
     }
 
     @Override

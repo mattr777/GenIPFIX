@@ -30,11 +30,15 @@
         <Button mnemonicParsing="false" onAction="#addEntField" prefHeight="25.0" prefWidth="147.0" text="Add Enterprise Field" />
         <Button mnemonicParsing="false" onAction="#generateFile" prefHeight="25.0" prefWidth="147.0" text="Generate File" />
         <HBox alignment="CENTER_LEFT" spacing="10.0">
-         <Label text="Records" />
+            <Label text="Records" />
             <TextField fx:id="nDataRecords" promptText="number of records" text="50" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="10.0">
-         <Label text="File Name" />
+            <Label text="Destination Port" />
+            <TextField fx:id="destPort" promptText="destination port" text="2055" />
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <Label text="File Name" />
             <TextField fx:id="filename" promptText="filename" text="ipfix.pcap" />
         </HBox>
     </children>

@@ -14,7 +14,7 @@ public class IPFIXDataSet extends IPFIXSet {
         return dataBuffer.array();
     }
 
-    public IPFIXDataSet(IPFIXTemplateRecord templateRecord) {
+    public IPFIXDataSet(IPFIXTemplateRecord templateRecord, int scenario, int timeStamp) {
         setHeader = new IPFIXSetHeader(templateRecord.getTemplateID());
         ArrayList<IPFIXFieldSpecifier> ipfixFieldSpecifiers = templateRecord.getFieldSpecifiers();
         int recordLength = 0;
@@ -26,16 +26,7 @@ public class IPFIXDataSet extends IPFIXSet {
         setHeader.addRecordLength((short)recordLength);
         dataBuffer.put(setHeader.getBuffer());
         for (IPFIXFieldSpecifier ipfixFieldSpecifier : ipfixFieldSpecifiers) {
-            int fieldLength = ipfixFieldSpecifier.getFieldLength();
-            short informationElementID = ipfixFieldSpecifier.getInformationElementID();
-            ByteBuffer b = ByteBuffer.allocate(fieldLength);
-            if (informationElementID == IPFIXInformationElements.get().getElementID("protocolIdentifier")) {
-                b.put((byte) 17);
-            } else {
-                for (int i = 0; i < fieldLength; i++) {
-                    b.put((byte) i);
-                }
-            }
+            ByteBuffer b = ipfixFieldSpecifier.getSimulatedValue(scenario, timeStamp);
             dataBuffer.put(b.array());
         }
 

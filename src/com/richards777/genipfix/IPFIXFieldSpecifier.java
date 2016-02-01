@@ -1,13 +1,15 @@
 package com.richards777.genipfix;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class IPFIXFieldSpecifier {
+    private static final byte ICMP = 1;
+    private static final byte TCP = 6;
+    private static final byte UDP = 17;
     private short informationElementID = 0;
     private short fieldLength = 0;
     private int enterpriseNumber = 0;
-
-    // TODO: add support for enterprise defined fields
 
     public IPFIXFieldSpecifier(short elementID) {
         informationElementID = elementID;
@@ -40,6 +42,35 @@ public class IPFIXFieldSpecifier {
 
     public short getFieldLength() {
         return fieldLength;
+    }
+
+    public ByteBuffer getSimulatedValue(int scenario, int timeStamp){
+        ByteBuffer b = ByteBuffer.allocate(fieldLength);
+        if (isEnterpriseField()) {
+            for (int i = 0; i < fieldLength; i++) {
+                b.put((byte) i);
+            }
+            return b;
+        }
+
+        if (informationElementID == IPFIXInformationElements.get().getElementID("protocolIdentifier")) {
+            if (timeStamp % 10 == 0) {
+                b.put(ICMP);
+            } else if (timeStamp % 10 > 7) {
+                b.put(TCP);
+            } else {
+                b.put(UDP);
+            }
+        } else if (informationElementID == IPFIXInformationElements.get().getElementID("octetDeltaCount")) {
+            b.putLong(ThreadLocalRandom.current().nextInt(1,1001));
+        } else if (informationElementID == IPFIXInformationElements.get().getElementID("packetDeltaCount")) {
+            b.putLong(ThreadLocalRandom.current().nextInt(1, 51));
+        } else {
+            for (int i = 0; i < fieldLength; i++) {
+                b.put((byte) i);
+            }
+        }
+        return b;
     }
 
     public short getInformationElementID() {
