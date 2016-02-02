@@ -5,6 +5,11 @@ import java.util.ArrayList;
 
 public class IPFIXDataSet extends IPFIXSet {
     private ByteBuffer dataBuffer;
+    private int nFlows;
+
+    public int getNumberOfFlows() {
+        return nFlows;
+    }
 
     public short lengthInBytes() {
         return setHeader.getSetLength();
@@ -22,13 +27,15 @@ public class IPFIXDataSet extends IPFIXSet {
             recordLength += ipfixFieldSpecifier.getFieldLength();
         }
 
-        dataBuffer = ByteBuffer.allocate(recordLength + setHeader.getLengthInBytes());
-        setHeader.addRecordLength((short)recordLength);
+        nFlows = (1500 - 46 - setHeader.getLengthInBytes()) / recordLength;
+        dataBuffer = ByteBuffer.allocate(recordLength * nFlows + setHeader.getLengthInBytes());
+        setHeader.addRecordLength((short)(recordLength * nFlows));
         dataBuffer.put(setHeader.getBuffer());
-        for (IPFIXFieldSpecifier ipfixFieldSpecifier : ipfixFieldSpecifiers) {
-            ByteBuffer b = ipfixFieldSpecifier.getSimulatedValue(scenario, timeStamp);
-            dataBuffer.put(b.array());
+        for (int i = 0; i < nFlows; i++) {
+            for (IPFIXFieldSpecifier ipfixFieldSpecifier : ipfixFieldSpecifiers) {
+                ByteBuffer b = ipfixFieldSpecifier.getSimulatedValue(scenario, timeStamp);
+                dataBuffer.put(b.array());
+            }
         }
-
     }
 }

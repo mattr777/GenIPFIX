@@ -53,6 +53,10 @@ public class IPFIXFieldSpecifier {
             return b;
         }
 
+        int nPackets = ThreadLocalRandom.current().nextInt(1, 51);
+        int nOctets = ThreadLocalRandom.current().nextInt(nPackets, 1001);
+        long startTimeMillis = System.currentTimeMillis() - 60000;
+        long endTimeMillis = startTimeMillis + ThreadLocalRandom.current().nextInt(1000, 50000);
         if (informationElementID == IPFIXInformationElements.get().getElementID("protocolIdentifier")) {
             if (timeStamp % 10 == 0) {
                 b.put(ICMP);
@@ -62,9 +66,19 @@ public class IPFIXFieldSpecifier {
                 b.put(UDP);
             }
         } else if (informationElementID == IPFIXInformationElements.get().getElementID("octetDeltaCount")) {
-            b.putLong(ThreadLocalRandom.current().nextInt(1,1001));
+            b.putLong(nOctets);
         } else if (informationElementID == IPFIXInformationElements.get().getElementID("packetDeltaCount")) {
-            b.putLong(ThreadLocalRandom.current().nextInt(1, 51));
+            b.putLong(nPackets);
+        } else if (informationElementID == IPFIXInformationElements.get().getElementID("sourceIPv4Address")) {
+            b.putInt(ThreadLocalRandom.current().nextInt(0x0A000000, 0x7FFFFFFF));
+        } else if (informationElementID == IPFIXInformationElements.get().getElementID("destinationIPv4Address")) {
+            b.putInt(ThreadLocalRandom.current().nextInt(0x0A000000, 0x7FFFFFFF));
+        } else if (informationElementID == IPFIXInformationElements.get().getElementID("ingressInterface")) {
+            b.putInt(ThreadLocalRandom.current().nextInt(1, 64));
+        } else if (informationElementID == IPFIXInformationElements.get().getElementID("flowStartMilliseconds")) {
+            b.putLong(startTimeMillis);
+        } else if (informationElementID == IPFIXInformationElements.get().getElementID("flowEndMilliseconds")) {
+            b.putLong(endTimeMillis);
         } else {
             for (int i = 0; i < fieldLength; i++) {
                 b.put((byte) i);

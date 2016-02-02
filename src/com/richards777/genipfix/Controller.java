@@ -44,6 +44,8 @@ public class Controller implements Initializable {
         createIANAField(null);
     }
 
+    private int nextSequenceNumber = 1;
+
     private void createIANAField(String selectedName) {
         ComboBox<String> stringComboBox = new ComboBox<>();
         stringComboBox.setPromptText("element name");
@@ -206,7 +208,7 @@ public class Controller implements Initializable {
 
         EthernetFrame templateEthernetFrame = createEthernetFrame(ipfixTemplateSets, 1, udpPort);
 
-        int timeInSeconds = 1451499300;
+        int timeInSeconds = (int)(System.currentTimeMillis()/1000);
         PacketHeader templatePacketHeader = createPacketHeader(timeInSeconds, templateEthernetFrame.getLengthInBytes());
 
         Path path = Paths.get(filename.getText());
@@ -219,7 +221,7 @@ public class Controller implements Initializable {
 
             for (int i = 0; i < nRecords; i++) {
                 timeInSeconds++;
-                EthernetFrame ethernetDataFrame = createEthernetDataFrame(templateSet, i+1, scenario, timeInSeconds, udpPort);
+                EthernetFrame ethernetDataFrame = createEthernetDataFrame(templateSet, scenario, timeInSeconds, udpPort);
                 PacketHeader dataPacketHeader = createPacketHeader(timeInSeconds, ethernetDataFrame.getLengthInBytes());
                 out.write(dataPacketHeader.getBuffer());
                 out.write(ethernetDataFrame.getBuffer());
@@ -269,11 +271,13 @@ public class Controller implements Initializable {
         return new PacketHeader(tsSec, 0, lengthInBytes, lengthInBytes);
     }
 
-    private EthernetFrame createEthernetDataFrame(IPFIXTemplateSet templateSet, int sequenceNumber, int scenario, int timeStamp, short udpPort) {
-        IPFIXDataSet dataSet = new IPFIXDataSet(templateSet.getTemplateRecord(), scenario, timeStamp);
+    private EthernetFrame createEthernetDataFrame(IPFIXTemplateSet templateSet, int scenario, int timeStamp, short udpPort) {
         List<IPFIXDataSet> ipfixDataSets = new ArrayList<>();
-        ipfixDataSets.add(dataSet);
-        return createEthernetFrame(ipfixDataSets, sequenceNumber, udpPort);
+        IPFIXDataSet ipfixDataSet = new IPFIXDataSet(templateSet.getTemplateRecord(), scenario, timeStamp);
+        ipfixDataSets.add(ipfixDataSet);
+        int currentSequenceNumber = nextSequenceNumber;
+        nextSequenceNumber += ipfixDataSet.getNumberOfFlows();
+        return createEthernetFrame(ipfixDataSets, currentSequenceNumber, udpPort);
     }
 
     private EthernetFrame createEthernetFrame(List<? extends IPFIXSet> ipfixSets, int sequenceNumber, short udpPort) {
