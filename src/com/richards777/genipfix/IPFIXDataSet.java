@@ -32,10 +32,8 @@ public class IPFIXDataSet extends IPFIXSet {
         setHeader.addRecordLength((short)(recordLength * nFlows));
         dataBuffer.put(setHeader.getBuffer());
         for (int i = 0; i < nFlows; i++) {
-            for (IPFIXFieldSpecifier ipfixFieldSpecifier : ipfixFieldSpecifiers) {
-                ByteBuffer b = ipfixFieldSpecifier.getSimulatedValue(scenario, timeStamp);
-                dataBuffer.put(b.array());
-            }
+            ByteBuffer b = IPFIXFieldSpecifier.getSimulatedValues(ipfixFieldSpecifiers, recordLength, scenario, timeStamp);
+            dataBuffer.put(b.array());
         }
     }
 }
