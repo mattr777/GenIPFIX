@@ -16,7 +16,7 @@ public class IPFIXMessageHeader {
 //    used by the Collecting Process to identify whether any IPFIX Data
 //    Records have been missed.  Template and Options Template Records
 //    do not increase the Sequence Number.
-    private int observationDomainID = 0x99999999; //    A 32-bit identifier of the Observation Domain that is locally
+    private int observationDomainID = 0x9999999; //    A 32-bit identifier of the Observation Domain that is locally
 //    unique to the Exporting Process.  The Exporting Process uses the
 //    Observation Domain ID to uniquely identify to the Collecting
 //    Process the Observation Domain that metered the Flows.  It is
