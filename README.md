@@ -1,27 +1,17 @@
 # README #
 
-This is a JavaFX app.
+This is a JavaFX app that will allow a user to easily generate IPFIX pcap files for testing.
 
-### What is this repository for? ###
+## Usage
 
-* This program will allow a user to easily generate IPFIX pcap files for testing.
 
-### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+## Contributing
 
-### Contribution guidelines ###
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/mattr777/GenIPFIX
 
-* Writing tests
-* Code review
-* Other guidelines
 
-### Who do I talk to? ###
+## License
 
-* Repo owner or admin
-* Other community or team contact
+This software is available as open source under the terms of the [Apache License, Version 2.0](https://opensource.org/licenses/Apache-2.0).
