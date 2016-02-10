@@ -31,6 +31,9 @@ public class Controller implements Initializable {
     private TextField destPort;
 
     @FXML
+    private TextField destAddress;
+
+    @FXML
     private TextField templateID;
 
     @FXML
@@ -196,6 +199,10 @@ public class Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void playFile(ActionEvent event) {
     }
 
     @FXML
