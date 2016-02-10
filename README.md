@@ -1,4 +1,4 @@
-# README #
+# GenIPFIX
 
 This is a JavaFX app that will allow a user to easily generate IPFIX pcap files for testing.
 
