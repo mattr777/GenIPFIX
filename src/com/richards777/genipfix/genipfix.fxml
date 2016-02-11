@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="500.0" prefWidth="490.0" spacing="10.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.richards777.genipfix.Controller">
+<VBox prefHeight="500.0" prefWidth="376.0" spacing="10.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.richards777.genipfix.Controller">
     <children>
         <MenuBar>
          <menus>
@@ -40,9 +40,9 @@
 
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <Label text="Destination Port" />
-            <TextField fx:id="destPort" promptText="destination port" text="2055" />
+            <TextField fx:id="destPort" prefHeight="25.0" prefWidth="48.0" promptText="destination port" text="2055" />
             <Label text="Address" />
-            <TextField fx:id="destAddress" promptText="destination address" text="192.168.0.51" />
+            <TextField fx:id="destAddress" prefHeight="25.0" prefWidth="101.0" promptText="destination address" text="192.168.123.101" />
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="10.0">

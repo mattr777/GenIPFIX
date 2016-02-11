@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.*;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -203,6 +203,62 @@ public class Controller implements Initializable {
 
     @FXML
     private void playFile(ActionEvent event) {
+        DatagramSocket socket = null;
+        try {
+            socket = new DatagramSocket(0);
+            socket.setSoTimeout(10000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+        InetAddress collectorAddress = null;
+        try {
+            collectorAddress = InetAddress.getByName(destAddress.getText());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        int port = Integer.parseInt(destPort.getText());
+
+        IPFIXTemplateSet templateSet = createIpfixTemplateSet();
+        List<IPFIXTemplateSet> ipfixTemplateSets = new ArrayList<>();
+        ipfixTemplateSets.add(templateSet);
+        IPFIXMessage ipfixTemplateMessage = new IPFIXMessage(1);
+        ipfixTemplateSets.forEach(ipfixTemplateMessage::addSet);
+
+        byte[] templateBuffer = ipfixTemplateMessage.getBuffer();
+        DatagramPacket templatePacket = new DatagramPacket(templateBuffer, templateBuffer.length, collectorAddress, port);
+        try {
+            if (socket != null) {
+                socket.send(templatePacket);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int nRecords = Integer.parseInt(nDataRecords.getText());
+        int scenario = 1;
+        for (int i = 0; i < nRecords; i++) {
+            int timeInSeconds = (int)(System.currentTimeMillis()/1000);
+            List<IPFIXDataSet> ipfixDataSets = new ArrayList<>();
+            IPFIXDataSet ipfixDataSet = new IPFIXDataSet(templateSet.getTemplateRecord(), scenario, timeInSeconds);
+            ipfixDataSets.add(ipfixDataSet);
+            int currentSequenceNumber = nextSequenceNumber;
+            nextSequenceNumber += ipfixDataSet.getNumberOfFlows();
+            IPFIXMessage ipfixDataMessage = new IPFIXMessage(currentSequenceNumber);
+            ipfixDataSets.forEach(ipfixDataMessage::addSet);
+
+            byte[] dataBuffer = ipfixDataMessage.getBuffer();
+            DatagramPacket dataPacket = new DatagramPacket(dataBuffer, dataBuffer.length, collectorAddress, port);
+            try {
+                if (socket != null) {
+                    socket.send(dataPacket);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
